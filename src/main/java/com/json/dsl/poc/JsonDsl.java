@@ -1,6 +1,7 @@
 package com.json.dsl.poc;
 
 import javax.json.Json;
+import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 import java.util.function.Consumer;
@@ -36,8 +37,15 @@ public class JsonDsl {
     }
 
     public static JsonValue jsonObject(Consumer<ObjectDsl> applier) {
-
         ObjectDsl rootReceiver = new ObjectDsl();
+
+        applier.accept(rootReceiver);
+
+        return rootReceiver.build();
+    }
+
+    public static JsonValue jsonArray(Consumer<JsonArrayBuilder> applier) {
+        JsonArrayBuilder rootReceiver = Json.createArrayBuilder();
 
         applier.accept(rootReceiver);
 
