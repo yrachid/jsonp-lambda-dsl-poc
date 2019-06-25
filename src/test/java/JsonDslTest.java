@@ -51,14 +51,15 @@ public class JsonDslTest {
     @Test
     public void creates_root_arrays() {
         JsonValue value = jsonArray(array -> array
-            .add("a")
-            .add("b")
-            .add("c")
+            .string("a")
+            .integer(10)
+            .object(person -> person
+                .string("name", "Doe")
+            )
         );
 
         assertThat(value.asJsonArray().getString(0), is("a"));
-        assertThat(value.asJsonArray().getString(1), is("b"));
-        assertThat(value.asJsonArray().getString(2), is("c"));
-
+        assertThat(value.asJsonArray().getInt(1), is(10));
+        assertThat(value.asJsonArray().getJsonObject(2).getString("name"), is("Doe"));
     }
 }
