@@ -58,6 +58,15 @@ public class JsonDsl {
             return this;
         }
 
+        public ObjectDsl array(String name, Consumer<ArrayDsl> arrayApplier) {
+            ArrayDsl receiver = new ArrayDsl();
+            arrayApplier.accept(receiver);
+
+            _builder.add(name, receiver.build());
+
+            return this;
+        }
+
         public ObjectDsl object(String name, Consumer<ObjectDsl> objectApplier) {
             ObjectDsl value = new ObjectDsl();
             objectApplier.accept(value);

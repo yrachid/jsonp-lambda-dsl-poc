@@ -1,6 +1,8 @@
 import org.junit.Test;
 
 import javax.json.JsonNumber;
+import javax.json.JsonObject;
+import javax.json.JsonObjectBuilder;
 import javax.json.JsonValue;
 
 import static com.json.dsl.poc.JsonDsl.jsonArray;
@@ -38,14 +40,26 @@ public class JsonDslTest {
             .string("artist", "Emicida")
             .object("albums", bla -> bla
                 .integer("count", 8)
+                .array("mostPopularAlbums", array -> array
+                    .object(emicidio -> emicidio
+                        .string("title", "Emicidio")
+                        .integer("launchYear", 2010)
+                    )
+                )
             )
         );
 
         JsonNumber albumCount = value.asJsonObject().getJsonObject("albums").getJsonNumber("count");
         String artist = value.asJsonObject().getString("artist");
+        JsonObject emicidio = value.asJsonObject()
+            .getJsonObject("albums")
+            .getJsonArray("mostPopularAlbums")
+            .getJsonObject(0);
 
         assertThat(artist, is("Emicida"));
         assertThat(albumCount.intValue(), is(8));
+        assertThat(emicidio.getString("title"), is("Emicidio"));
+        assertThat(emicidio.getInt("launchYear"), is(2010));
     }
 
     @Test
